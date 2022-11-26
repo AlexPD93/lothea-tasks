@@ -7,24 +7,22 @@ export default {
       task: "",
       priority: 1,
       count: 3,
+      filtered: 10,
       tasks: [
         {
           name: "Feed cat",
           priority: 2,
           id: 1,
-          shown: true,
         },
         {
           name: "Take out rubbish",
           priority: 8,
           id: 2,
-          shown: true,
         },
         {
           name: "Buy mum's birthday present",
           priority: 1,
           id: 3,
-          shown: true,
         },
       ],
     };
@@ -40,7 +38,6 @@ export default {
         name: this.task,
         priority: this.priority,
         id: this.count,
-        shown: true,
       });
     },
     orderNumerically(e) {
@@ -60,12 +57,20 @@ export default {
       this.tasks.splice(indexOfObject, 1);
     },
   },
+
+  computed: {
+    filteredItems() {
+      return this.tasks.filter(
+        (task) => task.priority <= Number(this.filtered)
+      );
+    },
+  },
 };
 </script>
 
-<template>
+<template>git
   <div id="container">
-    <h1>My Vue Todo App</h1>
+    <h1>My Vue To do App</h1>
     <div id="button">
       <label for="task">Type a task</label>
       <input v-model="task" id="task" type="text" placeholder="Enter task" />
@@ -75,9 +80,18 @@ export default {
     </div>
     <button @click="orderNumerically">Sort by priority</button>
     <button @click="orderWhenAdded">Sort by when added</button>
+    <label>Filter by urgency:</label>
+    <input
+      v-model="filtered"
+      id="filtered"
+      type="range"
+      min="1"
+      max="10"
+      list="tickmarks"
+    />
     <ul>
-      <li v-for="item of tasks">
-        {{ item.name }}
+      <li v-for="(item, index) in filteredItems" :key="index">
+        {{ item.name }} {{ item.hidden }}
         <button v-bind:id="item.id" @click="deleteTask">X</button>
       </li>
     </ul>
