@@ -6,21 +6,25 @@ export default {
     return {
       task: "",
       priority: 1,
+      count: 3,
       tasks: [
         {
           name: "Feed cat",
           priority: 2,
           id: 1,
+          shown: true,
         },
         {
           name: "Take out rubbish",
           priority: 8,
           id: 2,
+          shown: true,
         },
         {
           name: "Buy mum's birthday present",
           priority: 1,
           id: 3,
+          shown: true,
         },
       ],
     };
@@ -30,11 +34,13 @@ export default {
     submitTask() {
       if (this.task.length === 0) return;
       if (this.priority < 1 || this.priority > 10) return;
+      this.count++;
 
       this.tasks.push({
         name: this.task,
         priority: this.priority,
-        id: this.tasks[this.tasks.length - 2].id + 1,
+        id: this.count,
+        shown: true,
       });
     },
     orderNumerically(e) {
@@ -46,6 +52,12 @@ export default {
       // Revert array back to what is was before
       const sortById = this.tasks.sort((a, b) => a.id - b.id);
       this.tasks = sortById;
+    },
+    deleteTask(e) {
+      const indexOfObject = this.tasks.findIndex((object) => {
+        return object.id === Number(e.target.id);
+      });
+      this.tasks.splice(indexOfObject, 1);
     },
   },
 };
@@ -64,13 +76,15 @@ export default {
     <button @click="orderNumerically">Sort by priority</button>
     <button @click="orderWhenAdded">Sort by when added</button>
     <ul>
-      <li v-for="item of tasks">{{ item.name }}</li>
+      <li v-for="item of tasks">
+        {{ item.name }}
+        <button v-bind:id="item.id" @click="deleteTask">X</button>
+      </li>
     </ul>
   </div>
 </template>
 
 <!--
- The ability to order the tasks by priority or the order they were added to the list - The ability to delete a task - 
 (Optional) The ability to filter to tasks below a certain
 priority (e.g. display only tasks with a priority below 3) You may add
 additional features if you have the time. -->
