@@ -29,7 +29,8 @@ export default {
   },
 
   methods: {
-    submitTask() {
+    submitTask(e) {
+      e.preventDefault();
       if (this.task.length === 0) return;
       if (this.priority < 1 || this.priority > 10) return;
       this.count++;
@@ -71,7 +72,7 @@ export default {
 <template>
   <div id="container" class="container">
     <h1>My Vue To do App</h1>
-    <div class="input-container">
+    <form class="input-container">
       <label for="task">Type a task</label>
       <input v-model="task" id="task" type="text" placeholder="Enter task" />
       <label for="priority">Urgency (1 most urgent, 10 least urgent) </label>
@@ -79,7 +80,7 @@ export default {
       <button @click="submitTask" type="submit" class="create-task">
         Create task
       </button>
-    </div>
+    </form>
     <div class="filter-container">
       <div class="filters">
         <button @click="orderNumerically">Sort by priority</button>
