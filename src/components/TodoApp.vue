@@ -68,38 +68,48 @@ export default {
 };
 </script>
 
-<template>git
-  <div id="container">
+<template>
+  <div id="container" class="container">
     <h1>My Vue To do App</h1>
-    <div id="button">
+    <div class="input-container">
       <label for="task">Type a task</label>
       <input v-model="task" id="task" type="text" placeholder="Enter task" />
       <label for="priority">Urgency (1 most urgent, 10 least urgent) </label>
       <input v-model="priority" id="priority" type="number" min="1" max="10" />
-      <button @click="submitTask" type="submit">Create task</button>
+      <button @click="submitTask" type="submit" class="create-task">
+        Create task
+      </button>
     </div>
-    <button @click="orderNumerically">Sort by priority</button>
-    <button @click="orderWhenAdded">Sort by when added</button>
-    <label>Filter by urgency:</label>
-    <input
-      v-model="filtered"
-      id="filtered"
-      type="range"
-      min="1"
-      max="10"
-      list="tickmarks"
-    />
-    <ul>
-      <li v-for="(item, index) in filteredItems" :key="index">
-        {{ item.name }} {{ item.hidden }}
-        <button v-bind:id="item.id" @click="deleteTask">X</button>
+    <div class="filter-container">
+      <div class="filters">
+        <button @click="orderNumerically">Sort by priority</button>
+        <button @click="orderWhenAdded">Sort by when added</button>
+      </div>
+      <form class="filters">
+        <label for="filtered">Filter by urgency:</label>
+        <input
+          v-model="filtered"
+          id="filtered"
+          type="range"
+          min="1"
+          max="10"
+          list="tickmarks"
+        />
+      </form>
+    </div>
+    <ul class="task-container">
+      <li v-for="(item, index) in filteredItems" :key="index" class="tasks">
+        <div class="task-p">
+          <p>{{ item.name }}</p>
+        </div>
+        <div class="add-task">
+          <button v-bind:id="item.id" @click="deleteTask" class="delete-button">
+            X
+          </button>
+        </div>
       </li>
     </ul>
   </div>
 </template>
 
-<!--
-(Optional) The ability to filter to tasks below a certain
-priority (e.g. display only tasks with a priority below 3) You may add
-additional features if you have the time. -->
 <style scoped></style>
